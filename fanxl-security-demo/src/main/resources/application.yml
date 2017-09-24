@@ -1,0 +1,28 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/fanxl-demo?useUnicode=yes&characterEncoding=UTF-8&useSSL=false
+    username: root
+    password: fxl123
+  session:
+    store-type: none
+  freemarker:
+    cache: false
+    charset: UTF-8
+    check-template-location: true
+    content-type: text/html
+    expose-request-attributes: true
+    expose-session-attributes: true
+    request-context-attribute: request
+    suffix: .ftl
+  output:
+    ansi:
+      enabled: detect
+
+server:
+  port: 8060
+
+fanxl:
+  security:
+    browser:
+      loginPage: /demo-sign.html
