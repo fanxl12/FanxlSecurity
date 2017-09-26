@@ -1,6 +1,9 @@
 package com.fanxl.security.core.validate.code;
 
 import com.fanxl.security.core.properties.SecurityProperties;
+import com.fanxl.security.core.validate.code.image.ImageCodeGenerator;
+import com.fanxl.security.core.validate.code.sms.DefaultSmsCodeSender;
+import com.fanxl.security.core.validate.code.sms.SmsCodeSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -25,11 +28,17 @@ public class ValidateCodeBeanConfig {
 	 * @return
 	 */
 	@Bean
-	@ConditionalOnMissingBean(name = "imageValidateCodeGenerator")
-	public ValidateCodeGenerator imageValidateCodeGenerator() {
-		ImageCodeGenerator codeGenerator = new ImageCodeGenerator(); 
+	@ConditionalOnMissingBean(name = "imageCodeGenerator")
+	public ValidateCodeGenerator imageCodeGenerator() {
+		ImageCodeGenerator codeGenerator = new ImageCodeGenerator();
 		codeGenerator.setSecurityProperties(securityProperties);
 		return codeGenerator;
+	}
+
+	@Bean
+	@ConditionalOnMissingBean(SmsCodeSender.class)
+	public SmsCodeSender smsCodeSender () {
+		return new DefaultSmsCodeSender();
 	}
 	
 

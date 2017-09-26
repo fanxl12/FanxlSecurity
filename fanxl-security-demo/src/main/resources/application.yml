@@ -26,9 +26,9 @@ fanxl:
   security:
 #    browser:
 #      loginPage: /demo-sign.html
-    code:
-      image:
-        length: 6
-        width: 100
-        url: /user, /user/*
+#    code:
+#      image:
+#        length: 6
+#        width: 100
+#        url: /user, /user/*
 
