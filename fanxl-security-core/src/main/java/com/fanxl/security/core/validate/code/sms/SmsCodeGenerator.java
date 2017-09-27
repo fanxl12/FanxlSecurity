@@ -19,7 +19,7 @@ import java.util.Random;
  * Date: 2017/9/24
  * Time: 23:01
  */
-@Component("smsCodeGenerator")
+@Component("smsValidateCodeGenerator")
 public class SmsCodeGenerator implements ValidateCodeGenerator {
 
     @Autowired

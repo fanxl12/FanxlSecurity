@@ -1,9 +1,11 @@
 package com.fanxl.security.browser;
 
+import com.fanxl.security.core.authentication.AbstractChannelSecurityConfig;
 import com.fanxl.security.core.authentication.mobile.SmsCodeAuthenticationSecurityConfig;
+import com.fanxl.security.core.properties.SecurityConstants;
 import com.fanxl.security.core.properties.SecurityProperties;
 import com.fanxl.security.core.validate.code.ValidateCodeFilter;
-import com.fanxl.security.core.validate.code.sms.SmsCodeFilter;
+import com.fanxl.security.core.validate.code.ValidateCodeSecurityConfig;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -26,16 +28,10 @@ import org.springframework.security.web.authentication.rememberme.PersistentToke
  * @Date: Created in 2017/9/20 13:12
  */
 @Configuration
-public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
+public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
 
     @Autowired
     private SecurityProperties securityProperties;
-
-    @Autowired
-    private AuthenticationSuccessHandler fanxlAuthenticationSuccessHandler;
-
-    @Autowired
-    private AuthenticationFailureHandler fanxlAuthenctiationFailureHandler;
 
     @Autowired
     private DataSource dataSource;
@@ -45,6 +41,47 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private SmsCodeAuthenticationSecurityConfig smsCodeAuthenticationSecurityConfig;
+
+    @Autowired
+    private ValidateCodeSecurityConfig validateCodeSecurityConfig;
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+
+        applyPasswordAuthenticationConfig(http);
+
+//        ValidateCodeFilter validateCodeFilter = new ValidateCodeFilter();
+//        validateCodeFilter.setAuthenticationFailureHandler(fanxlAuthenctiationFailureHandler);
+//        validateCodeFilter.setSecurityProperties(securityProperties);
+//        validateCodeFilter.afterPropertiesSet();
+//
+//        SmsCodeFilter smsCodeFilter = new SmsCodeFilter();
+//        smsCodeFilter.setAuthenticationFailureHandler(fanxlAuthenctiationFailureHandler);
+//        smsCodeFilter.setSecurityProperties(securityProperties);
+//        smsCodeFilter.afterPropertiesSet();
+
+        http.apply(validateCodeSecurityConfig)
+                    .and()
+                .apply(smsCodeAuthenticationSecurityConfig)
+                    .and() // 这里短信验证码和图形验证码的两个Filter合并为一个validateCodeSecurityConfig
+//                .addFilterBefore(smsCodeFilter, UsernamePasswordAuthenticationFilter.class)
+//                .addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
+                .rememberMe()
+                    .tokenRepository(persistentTokenRepository())
+                    .tokenValiditySeconds(securityProperties.getBrowser().getRememberMeSeconds())
+                    .userDetailsService(userDetailsService)
+                    .and()
+                .authorizeRequests()
+                    .antMatchers(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
+                            SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE,
+                            securityProperties.getBrowser().getLoginPage(),
+                            SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX+"/*")
+                            .permitAll()
+                .anyRequest()
+                .authenticated()
+                .and()
+                .csrf().disable();
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -57,42 +94,5 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
         tokenRepository.setDataSource(dataSource);
 //        tokenRepository.setCreateTableOnStartup(true);
         return tokenRepository;
-    }
-
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-
-        ValidateCodeFilter validateCodeFilter = new ValidateCodeFilter();
-        validateCodeFilter.setAuthenticationFailureHandler(fanxlAuthenctiationFailureHandler);
-        validateCodeFilter.setSecurityProperties(securityProperties);
-        validateCodeFilter.afterPropertiesSet();
-
-        SmsCodeFilter smsCodeFilter = new SmsCodeFilter();
-        smsCodeFilter.setAuthenticationFailureHandler(fanxlAuthenctiationFailureHandler);
-        smsCodeFilter.setSecurityProperties(securityProperties);
-        smsCodeFilter.afterPropertiesSet();
-
-        http.addFilterBefore(smsCodeFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
-                .formLogin()
-                    .loginPage("/authentication/require")
-                    .loginProcessingUrl("/authentication/form")
-                    .successHandler(fanxlAuthenticationSuccessHandler)
-                    .failureHandler(fanxlAuthenctiationFailureHandler)
-                    .and()
-                .rememberMe()
-                    .tokenRepository(persistentTokenRepository())
-                    .tokenValiditySeconds(securityProperties.getBrowser().getRememberMeSeconds())
-                    .userDetailsService(userDetailsService)
-                .and()
-                .authorizeRequests()
-                .antMatchers("/authentication/require",
-                        securityProperties.getBrowser().getLoginPage(),
-                        "/code/*").permitAll()
-                .anyRequest()
-                .authenticated()
-                .and()
-                .csrf().disable()
-                .apply(smsCodeAuthenticationSecurityConfig);
     }
 }

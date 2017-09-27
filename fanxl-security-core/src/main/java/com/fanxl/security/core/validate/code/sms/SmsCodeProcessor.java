@@ -10,11 +10,13 @@ import org.springframework.web.context.request.ServletWebRequest;
 
 /**
  * 短信验证码处理器
+ * 发送短信验证码
+ * 逻辑自己实现
  * 
  * @author zhailiang
  *
  */
-@Component("smsCodeProcessor")
+@Component("smsValidateCodeProcessor")
 public class SmsCodeProcessor extends AbstractValidateCodeProcessor<ValidateCode> {
 
 	/**
@@ -28,5 +30,4 @@ public class SmsCodeProcessor extends AbstractValidateCodeProcessor<ValidateCode
 		String mobile = ServletRequestUtils.getRequiredStringParameter(request.getRequest(), "mobile");
 		smsCodeSender.send(mobile, validateCode.getCode());
 	}
-
 }
