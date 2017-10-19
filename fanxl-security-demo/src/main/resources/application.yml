@@ -24,8 +24,13 @@ server:
 
 fanxl:
   security:
-#    browser:
-#      loginPage: /demo-sign.html
+    social:
+      qq:
+        app-id: 456565
+        secret: 23443
+    browser:
+      signUpUrl: /demo-signUp.ftl
+#      loginPage: /demo-signIn.html
 #    code:
 #      image:
 #        length: 6

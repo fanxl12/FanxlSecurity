@@ -20,6 +20,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.social.security.SpringSocialConfigurer;
 
 
 /**
@@ -45,6 +46,9 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
     @Autowired
     private ValidateCodeSecurityConfig validateCodeSecurityConfig;
 
+    @Autowired
+    private SpringSocialConfigurer fanxlSocialSecurityConfig;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
@@ -66,6 +70,8 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
                     .and() // 这里短信验证码和图形验证码的两个Filter合并为一个validateCodeSecurityConfig
 //                .addFilterBefore(smsCodeFilter, UsernamePasswordAuthenticationFilter.class)
 //                .addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
+                .apply(fanxlSocialSecurityConfig)
+                    .and()
                 .rememberMe()
                     .tokenRepository(persistentTokenRepository())
                     .tokenValiditySeconds(securityProperties.getBrowser().getRememberMeSeconds())
@@ -75,7 +81,9 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
                     .antMatchers(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
                             SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE,
                             securityProperties.getBrowser().getLoginPage(),
-                            SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX+"/*")
+                            SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX+"/*",
+                            securityProperties.getBrowser().getSignUpUrl(),
+                            "/user/regist")
                             .permitAll()
                 .anyRequest()
                 .authenticated()
