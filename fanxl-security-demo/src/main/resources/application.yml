@@ -5,7 +5,7 @@ spring:
     username: root
     password: fxl123
   session:
-    store-type: none
+    store-type: REDIS
   freemarker:
     cache: false
     charset: UTF-8
@@ -23,7 +23,7 @@ server:
   context-path: /sport
   port: 80
   session:
-    timeout: 300
+    timeout: 3000
 
 fanxl:
   security:

@@ -72,12 +72,20 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
                     .tokenValiditySeconds(securityProperties.getBrowser().getRememberMeSeconds())
                     .userDetailsService(userDetailsService)
                     .and()
+                .sessionManagement()
+                    .invalidSessionUrl("/session/invalid")
+                    .maximumSessions(1)
+//                    .maxSessionsPreventsLogin(true) // 阻止第二个用户登录
+//                    .expiredSessionStrategy() // 第二个用户把第一个用户踢下去了，第一个用户刷新提示，实现这个接口
+                    .and()
+                    .and()
                 .authorizeRequests()
                     .antMatchers(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
                             SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE,
                             securityProperties.getBrowser().getLoginPage(),
                             SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX+"/*",
                             securityProperties.getBrowser().getSignUpUrl(),
+                            "/session/invalid",
                             "/user/regist", "/demo-signUp.ftl")
                             .permitAll()
                 .anyRequest()

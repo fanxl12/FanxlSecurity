@@ -2,7 +2,7 @@ package com.fanxl.security.core.validate.code;
 
 import lombok.Data;
 
-import java.awt.image.BufferedImage;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
  * @Date: Created in 2017/9/22 9:58
  */
 @Data
-public class ValidateCode {
+public class ValidateCode implements Serializable {
 
     private String code;
 
