@@ -20,16 +20,19 @@ spring:
       enabled: detect
 
 server:
-  port: 8060
+  context-path: /sport
+  port: 80
+  session:
+    timeout: 300
 
 fanxl:
   security:
     social:
       qq:
-        app-id: 456565
-        secret: 23443
+        app-id: 101436428
+        app-secret: dc32b667bce14e17ba4125d6fa7a991c
     browser:
-      signUpUrl: /demo-signUp.ftl
+      signUpUrl: /demo-signUp
 #      loginPage: /demo-signIn.html
 #    code:
 #      image:

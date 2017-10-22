@@ -1,8 +1,8 @@
 package com.fanxl.security.core.social;
 
-import javax.sql.DataSource;
 
 import com.fanxl.security.core.properties.SecurityProperties;
+import org.apache.tomcat.jdbc.pool.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,21 +32,34 @@ public class SocialConfig extends SocialConfigurerAdapter {
 
     @Autowired(required = false)
 	private ConnectionSignUp connectionSignUp;
-	
+
+	/**
+	 * 配置JdbcUsersConnectionRepository
+	 * @param connectionFactoryLocator
+	 * @return
+	 */
 	@Override
 	public UsersConnectionRepository getUsersConnectionRepository(ConnectionFactoryLocator connectionFactoryLocator) {
+		// 第三个参数是加密的，开发暂时不加密
 		JdbcUsersConnectionRepository repository = new JdbcUsersConnectionRepository(dataSource, connectionFactoryLocator, Encryptors.noOpText());
-//		repository.setTablePrefix("imooc_");
+		// 下面是配置表前缀
+		repository.setTablePrefix("fan_");
 		if (connectionSignUp!=null){
 			repository.setConnectionSignUp(connectionSignUp);
 		}
 		return repository;
 	}
-	
+
+	/**
+	 * 作用是在认证拦截器上添加social的认证拦截功能，引导用户完成认证过程
+	 * @return
+	 */
 	@Bean
 	public SpringSocialConfigurer fanxlSocialSecurityConfig() {
+		// 个性化认证地址，默认是auth
 		String filterProcessesUrl = securityProperties.getSocial().getFilterProcessesUrl();
 		FanxlSpringSocialConfigurer configurer = new FanxlSpringSocialConfigurer(filterProcessesUrl);
+		// 告诉如果找不到用户跳转到指定的url上
 		configurer.signupUrl(securityProperties.getBrowser().getSignUpUrl());
 		return configurer;
 	}

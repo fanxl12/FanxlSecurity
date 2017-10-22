@@ -1,5 +1,8 @@
 package com.fanxl.security.browser.support;
 
+import lombok.ToString;
+
+@ToString
 public class SocialUserInfo {
 
     private String providerId;
@@ -41,5 +44,5 @@ public class SocialUserInfo {
 	public void setHeadimg(String headimg) {
 		this.headimg = headimg;
 	}
-	
+
 }

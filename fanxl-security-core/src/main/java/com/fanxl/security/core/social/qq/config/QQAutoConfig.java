@@ -10,6 +10,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.social.connect.ConnectionFactory;
 
 /**
+ * ConditionalOnProperty这个作用是判断系统是否配了fanxl.security.social.qq.app-id
+ * 如果没有就不生效，如果有才生效
  * @author zhailiang
  *
  */
