@@ -86,7 +86,7 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
                             SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX+"/*",
                             securityProperties.getBrowser().getSignUpUrl(),
                             "/session/invalid",
-                            "/user/regist", "/demo-signUp.ftl")
+                            "/user/regist")
                             .permitAll()
                 .anyRequest()
                 .authenticated()

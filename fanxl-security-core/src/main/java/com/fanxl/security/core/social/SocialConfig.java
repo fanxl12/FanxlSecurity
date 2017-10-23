@@ -46,6 +46,7 @@ public class SocialConfig extends SocialConfigurerAdapter {
 		JdbcUsersConnectionRepository repository = new JdbcUsersConnectionRepository(dataSource, connectionFactoryLocator, Encryptors.noOpText());
 		// 下面是配置表前缀
 		repository.setTablePrefix("fan_");
+		// 下面这个代码是为了QQ授权的时候，如果不存在自动注册用户
 		if (connectionSignUp!=null){
 			repository.setConnectionSignUp(connectionSignUp);
 		}

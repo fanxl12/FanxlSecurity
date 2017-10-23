@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.view.AbstractView;
 
 /**
+ * 处理绑定之后
  * @author zhailiang
  *
  */
@@ -26,7 +27,7 @@ public class FanConnectView extends AbstractView {
 			HttpServletResponse response) throws Exception {
 
 		response.setContentType("text/html;charset=UTF-8");
-		if (model.get("connection") == null) {
+		if (model.get("connections") == null) {
 			response.getWriter().write("<h3>解绑成功</h3>");
 		} else {
 			response.getWriter().write("<h3>绑定成功</h3>");

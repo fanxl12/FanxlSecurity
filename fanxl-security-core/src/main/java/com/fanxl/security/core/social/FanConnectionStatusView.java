@@ -16,6 +16,7 @@ import org.springframework.web.servlet.view.AbstractView;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
+ * 绑定状态
  * @author zhailiang
  *
  */
