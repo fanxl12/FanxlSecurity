@@ -15,6 +15,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.security.web.session.InvalidSessionStrategy;
+import org.springframework.security.web.session.SessionInformationExpiredStrategy;
 import org.springframework.social.security.SpringSocialConfigurer;
 
 
@@ -43,6 +45,12 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
 
     @Autowired
     private SpringSocialConfigurer fanxlSocialSecurityConfig;
+
+    @Autowired
+    private SessionInformationExpiredStrategy sessionInformationExpiredStrategy;
+
+    @Autowired
+    private InvalidSessionStrategy invalidSessionStrategy;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -73,11 +81,15 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
                     .userDetailsService(userDetailsService)
                     .and()
                 .sessionManagement()
-                    .invalidSessionUrl("/session/invalid")
-                    .maximumSessions(1)
-//                    .maxSessionsPreventsLogin(true) // 阻止第二个用户登录
-//                    .expiredSessionStrategy() // 第二个用户把第一个用户踢下去了，第一个用户刷新提示，实现这个接口
+                    .invalidSessionStrategy(invalidSessionStrategy)
+                    .maximumSessions(securityProperties.getBrowser().getSession().getMaximumSessions())
+                    .maxSessionsPreventsLogin(securityProperties.getBrowser().getSession().isMaxSessionsPreventsLogin()) // 阻止第二个用户登录
+                    .expiredSessionStrategy(sessionInformationExpiredStrategy) // 第二个用户把第一个用户踢下去了，第一个用户刷新提示，实现这个接口
+//                    .invalidSessionUrl("/session/invalid")
                     .and()
+                    .and()
+                .logout()
+//                    .logoutUrl("/signOut") // 指定退出的地址
                     .and()
                 .authorizeRequests()
                     .antMatchers(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
@@ -85,7 +97,7 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
                             securityProperties.getBrowser().getLoginPage(),
                             SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX+"/*",
                             securityProperties.getBrowser().getSignUpUrl(),
-                            "/session/invalid",
+                            "/session/invalid", securityProperties.getBrowser().getSession().getSessionInvalidUrl(),
                             "/user/regist")
                             .permitAll()
                 .anyRequest()

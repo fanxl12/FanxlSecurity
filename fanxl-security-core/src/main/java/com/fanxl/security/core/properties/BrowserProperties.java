@@ -10,6 +10,8 @@ import lombok.Data;
 @Data
 public class BrowserProperties {
 
+    private SessionProperties session = new SessionProperties();
+
     private String signUpUrl = "/signUp.html";
 
     //这里需要加/

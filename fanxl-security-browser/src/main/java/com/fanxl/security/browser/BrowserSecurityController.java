@@ -66,6 +66,12 @@ public class BrowserSecurityController {
         return new SimpleResponse("未认证用户，请先认证");
     }
 
+
+    /**
+     * QQ授权，注册或者绑定的时候，通过ajax请求获取绑定信息
+     * @param request
+     * @return
+     */
     @GetMapping("/social/user")
     public SocialUserInfo getSocialUserInfo(HttpServletRequest request) {
         SocialUserInfo userInfo = new SocialUserInfo();

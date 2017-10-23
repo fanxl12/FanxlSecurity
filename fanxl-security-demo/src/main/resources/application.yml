@@ -23,7 +23,7 @@ server:
   context-path: /sport
   port: 80
   session:
-    timeout: 3000
+    timeout: 600
 
 fanxl:
   security:
