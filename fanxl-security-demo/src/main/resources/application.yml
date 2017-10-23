@@ -31,6 +31,9 @@ fanxl:
       qq:
         app-id: 101436428
         app-secret: dc32b667bce14e17ba4125d6fa7a991c
+      weixin:
+        app-id: 24345
+        app-secret: 657678
     browser:
       signUpUrl: /demo-signUp
 #      loginPage: /demo-signIn.html
