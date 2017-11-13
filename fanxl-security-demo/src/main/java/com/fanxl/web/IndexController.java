@@ -1,9 +1,7 @@
 package com.fanxl.web;
 
-import com.fanxl.security.browser.support.SocialUserInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.web.ProviderSignInUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,9 +21,18 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/index")
 public class IndexController {
 
+    @Autowired
+    private ProviderSignInUtils providerSignInUtils;
+
     @GetMapping("")
     public String signUp(Model model, HttpServletRequest request){
         log.info(request.getContentType());
         return "index";
+    }
+
+    @GetMapping("binding")
+    public String binding(HttpServletRequest request){
+        providerSignInUtils.doPostSignUp("111", new ServletWebRequest(request));
+        return "binding";
     }
 }

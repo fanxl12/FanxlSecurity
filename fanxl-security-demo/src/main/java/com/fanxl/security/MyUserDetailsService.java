@@ -1,14 +1,12 @@
 package com.fanxl.security;
 
+import com.fanxl.po.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.social.security.SocialUser;
 import org.springframework.social.security.SocialUserDetails;
 import org.springframework.social.security.SocialUserDetailsService;
 import org.springframework.stereotype.Component;
@@ -42,9 +40,23 @@ public class MyUserDetailsService implements UserDetailsService, SocialUserDetai
         //根据查找到的用户信息判断用户是否被冻结
         String password = passwordEncoder.encode("123456");
         log.info("password:"+password);
-        return new SocialUser(userId, password,
-                true, true, true, true,
-                AuthorityUtils.commaSeparatedStringToAuthorityList("admin"));
+
+        User user = new User();
+        user.setUserId("111");
+        user.setUsername("123");
+        user.setPassword(password);
+
+        return user;
+
+//        if (userId.equals("123")){
+//            return user;
+//        }else if (userId.equals("111")){
+//            return user;
+//        }else {
+//            return new SocialUser(userId, password,
+//                    true, true, true, true,
+//                    AuthorityUtils.commaSeparatedStringToAuthorityList("admin"));
+//        }
     }
 
 }

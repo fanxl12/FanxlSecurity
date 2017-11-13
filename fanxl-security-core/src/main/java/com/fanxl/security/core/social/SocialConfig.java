@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.crypto.encrypt.Encryptors;
+import org.springframework.social.UserIdSource;
 import org.springframework.social.config.annotation.EnableSocial;
 import org.springframework.social.config.annotation.SocialConfigurerAdapter;
 import org.springframework.social.connect.ConnectionFactoryLocator;
@@ -69,9 +70,17 @@ public class SocialConfig extends SocialConfigurerAdapter {
 
 	@Bean
 	public ProviderSignInUtils providerSignInUtils(ConnectionFactoryLocator connectionFactoryLocator) {
-		return new ProviderSignInUtils(connectionFactoryLocator,
-				getUsersConnectionRepository(connectionFactoryLocator)) {
-		};
+		ProviderSignInUtils providerSignInUtils = new ProviderSignInUtils(connectionFactoryLocator, getUsersConnectionRepository(connectionFactoryLocator));
+		return  providerSignInUtils;
 	}
-	
+
+
+	@Override
+	public UserIdSource getUserIdSource() {
+		return new SecurityContextUserIdSource();
+	}
+
+
+
+
 }
