@@ -14,7 +14,7 @@ public class BrowserProperties {
 
     private String signUpUrl = "/signUp.html";
 
-    private String signOutUrl;
+    private String signOutUrl = "/signOut.html";
 
     //这里需要加/
     private String loginPage = SecurityConstants.DEFAULT_LOGIN_PAGE_URL;

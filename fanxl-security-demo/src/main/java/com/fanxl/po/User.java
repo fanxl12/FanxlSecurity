@@ -38,7 +38,7 @@ public class User implements SocialUserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return AuthorityUtils.commaSeparatedStringToAuthorityList("admin");
+        return AuthorityUtils.commaSeparatedStringToAuthorityList("admin, ROLE_USER");
     }
 
     @Override

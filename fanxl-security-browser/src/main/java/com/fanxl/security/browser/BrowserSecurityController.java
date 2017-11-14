@@ -1,8 +1,8 @@
 package com.fanxl.security.browser;
 
-import com.fanxl.security.browser.support.SimpleResponse;
 import com.fanxl.security.browser.support.SocialUserInfo;
 import com.fanxl.security.core.properties.SecurityProperties;
+import com.fanxl.security.core.support.SimpleResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +25,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * @Description
- * @Author: Fanxl
- * @Date: Created in 2017/9/20 13:50
+ * @description
+ * @author: Fanxl
+ * @date: Created in 2017/9/20 13:50
  */
 @Slf4j
 @RestController

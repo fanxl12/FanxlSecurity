@@ -12,9 +12,14 @@
     <url>http://maven.apache.org</url>
 
     <dependencies>
+        <!--<dependency>-->
+            <!--<groupId>com.fanxl.security</groupId>-->
+            <!--<artifactId>fanxl-security-browser</artifactId>-->
+            <!--<version>${fanxl.security.version}</version>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>com.fanxl.security</groupId>
-            <artifactId>fanxl-security-browser</artifactId>
+            <artifactId>fanxl-security-app</artifactId>
             <version>${fanxl.security.version}</version>
         </dependency>
         <dependency>

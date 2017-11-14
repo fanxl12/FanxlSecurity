@@ -36,6 +36,10 @@ public class SocialConfig extends SocialConfigurerAdapter {
     @Autowired(required = false)
 	private ConnectionSignUp connectionSignUp;
 
+	@Autowired(required = false)
+	private SocialAuthenticationFilterPostProcessor socialAuthenticationFilterPostProcessor;
+
+
 	/**
 	 * 配置JdbcUsersConnectionRepository
 	 * @param connectionFactoryLocator
@@ -65,6 +69,7 @@ public class SocialConfig extends SocialConfigurerAdapter {
 		FanxlSpringSocialConfigurer configurer = new FanxlSpringSocialConfigurer(filterProcessesUrl);
 		// 告诉如果找不到用户跳转到指定的url上
 		configurer.signupUrl(securityProperties.getBrowser().getSignUpUrl());
+		configurer.setSocialAuthenticationFilterPostProcessor(socialAuthenticationFilterPostProcessor);
 		return configurer;
 	}
 

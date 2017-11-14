@@ -25,6 +25,7 @@ server:
   session:
     timeout: 600
 
+
 fanxl:
   security:
     social:
@@ -36,6 +37,11 @@ fanxl:
         app-secret: 657678
     browser:
       signUpUrl: /demo-signUp
+security:
+  oauth2:
+    client:
+      client-id: imook
+      client-secret: imook-secret
 #      loginPage: /demo-signIn.html
 #    code:
 #      image:

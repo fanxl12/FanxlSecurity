@@ -1,4 +1,4 @@
-package com.fanxl.security.browser.support;
+package com.fanxl.security.core.support;
 
 import lombok.Data;
 
