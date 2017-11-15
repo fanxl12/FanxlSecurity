@@ -1,8 +1,8 @@
 package com.fanxl.security.browser;
 
-import com.fanxl.security.browser.support.SocialUserInfo;
 import com.fanxl.security.core.properties.SecurityProperties;
 import com.fanxl.security.core.support.SimpleResponse;
+import com.fanxl.security.core.support.SocialUserInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

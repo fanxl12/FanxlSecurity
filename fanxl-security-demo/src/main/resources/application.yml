@@ -37,6 +37,11 @@ fanxl:
         app-secret: 657678
     browser:
       signUpUrl: /demo-signUp
+    oauth2:
+      clients[0]:
+        clientId: imook
+        clientSecret: imook-secret
+        accessTokenValidateSeconds: 7200
 security:
   oauth2:
     client:
