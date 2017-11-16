@@ -1,5 +1,6 @@
 package com.fanxl.security.browser.logout;
 
+import com.fanxl.security.core.support.SimpleResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;

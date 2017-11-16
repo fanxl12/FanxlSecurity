@@ -2,6 +2,7 @@ package com.fanxl.security.app;
 
 import com.fanxl.security.app.authentication.openId.OpenIdAuthenticationSecurityConfig;
 import com.fanxl.security.core.authentication.mobile.SmsCodeAuthenticationSecurityConfig;
+import com.fanxl.security.core.authorize.AuthorizeConfigManager;
 import com.fanxl.security.core.properties.SecurityConstants;
 import com.fanxl.security.core.properties.SecurityProperties;
 import com.fanxl.security.core.validate.code.ValidateCodeSecurityConfig;
@@ -43,6 +44,9 @@ public class FanResourceServerConfig extends ResourceServerConfigurerAdapter {
     @Autowired
     private SecurityProperties securityProperties;
 
+    @Autowired
+    private AuthorizeConfigManager authorizeConfigManager;
+
     @Override
     public void configure(HttpSecurity http) throws Exception {
 
@@ -61,21 +65,9 @@ public class FanResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .and()
                 .apply(openIdAuthenticationSecurityConfig)
                 .and()
-                .authorizeRequests()
-                .antMatchers(
-                        SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
-                        SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE,
-                        securityProperties.getBrowser().getLoginPage(),
-                        SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX+"/*",
-                        securityProperties.getBrowser().getSignUpUrl(),
-                        securityProperties.getBrowser().getSession().getSessionInvalidUrl(),
-                        securityProperties.getBrowser().getSignOutUrl(),
-                        "/user/regist", "/social/signUp")
-                .permitAll()
-                .anyRequest()
-                .authenticated()
-                .and()
                 .csrf().disable();
+
+        authorizeConfigManager.config(http.authorizeRequests());
 
     }
 }

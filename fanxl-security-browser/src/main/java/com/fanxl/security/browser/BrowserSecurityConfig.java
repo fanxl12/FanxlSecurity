@@ -2,6 +2,7 @@ package com.fanxl.security.browser;
 
 import com.fanxl.security.core.authentication.AbstractChannelSecurityConfig;
 import com.fanxl.security.core.authentication.mobile.SmsCodeAuthenticationSecurityConfig;
+import com.fanxl.security.core.authorize.AuthorizeConfigManager;
 import com.fanxl.security.core.properties.SecurityConstants;
 import com.fanxl.security.core.properties.SecurityProperties;
 import com.fanxl.security.core.validate.code.ValidateCodeSecurityConfig;
@@ -54,6 +55,9 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
     @Autowired
     private LogoutSuccessHandler logoutSuccessHandler;
 
+    @Autowired
+    private AuthorizeConfigManager authorizeConfigManager;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
@@ -95,20 +99,9 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
                     .logoutSuccessHandler(logoutSuccessHandler)
                     .deleteCookies("JSESSIONID")
                     .and()
-                .authorizeRequests()
-                    .antMatchers(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
-                            SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE,
-                            securityProperties.getBrowser().getLoginPage(),
-                            SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX+"/*",
-                            securityProperties.getBrowser().getSignUpUrl(),
-                            securityProperties.getBrowser().getSession().getSessionInvalidUrl(),
-                            securityProperties.getBrowser().getSignOutUrl(),
-                            "/user/regist")
-                            .permitAll()
-                .anyRequest()
-                .authenticated()
-                .and()
                 .csrf().disable();
+
+        authorizeConfigManager.config(http.authorizeRequests());
     }
 
     /**
